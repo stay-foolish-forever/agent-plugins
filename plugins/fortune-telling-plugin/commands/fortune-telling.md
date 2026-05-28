@@ -5,7 +5,7 @@ description: Generate today's fortune reading
 
 ## Today's Fortune Telling
 
-Your lucky number is: !`echo $RANDOM`
+First, pick a random lucky number from 1 to 1000. Then, tell the user the lucky number.
 
 Now, based on the lucky number above, generate a hilarious and utterly nonsensical fortune-telling reading for today. The reading should:
 
