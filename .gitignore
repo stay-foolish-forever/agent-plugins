@@ -17,3 +17,6 @@ Icon?
 *.swp
 *.swo
 *~
+
+# Crush local data
+.crush/
