@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.apdisk
+Icon?
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

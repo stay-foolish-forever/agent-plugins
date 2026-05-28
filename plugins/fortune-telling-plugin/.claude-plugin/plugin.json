@@ -1,0 +1,6 @@
+{
+  "name": "fortune-telling-plugin",
+  "description": "Generate a random number and get a hilariously absurd fortune reading for today",
+  "version": "1.0.0",
+  "commands": "./commands"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "agent-plugins",
+  "owner": {
+    "name": "everlearner"
+  },
+  "description": "A collection of useful Claude Code plugins",
+  "plugins": [
+    {
+      "name": "fortune-telling-plugin",
+      "source": "./plugins/fortune-telling-plugin",
+      "description": "Generate a random number and get a hilariously absurd fortune reading for today",
+      "version": "1.0.0",
+      "license": "MIT"
+    }
+  ]
+}
