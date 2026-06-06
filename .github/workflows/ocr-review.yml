@@ -68,8 +68,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || steps.pr-context.outputs.head_sha }}
 
       - name: Fetch PR head ref (ensures fork commits are available)
-        if: github.event_name == 'pull_request_target'
-        run: git fetch origin pull/${{ github.event.pull_request.number }}/head
+        run: git fetch origin pull/${{ github.event.pull_request.number || github.event.issue.number }}/head
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
