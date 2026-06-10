@@ -79,7 +79,7 @@ jobs:
         run: git fetch origin pull/${{ github.event.pull_request.number || github.event.issue.number }}/head
 
       - name: Install OpenCodeReview
-        run: npm install -g @alibaba-group/open-code-review
+        run: npm install -g @alibaba-group/open-code-review --registry=https://registry.npmmirror.com
 
       - name: Configure OCR
         run: |
