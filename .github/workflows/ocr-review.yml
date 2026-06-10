@@ -37,7 +37,9 @@ permissions:
 
 jobs:
   code-review:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    container:
+      image: node:20
     # Run on PR events, or on comments starting with trigger keywords
     if: |
       github.event_name == 'pull_request_target' ||
@@ -69,11 +71,6 @@ jobs:
 
       - name: Fetch PR head ref (ensures fork commits are available)
         run: git fetch origin pull/${{ github.event.pull_request.number || github.event.issue.number }}/head
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Install OpenCodeReview
         run: npm install -g @alibaba-group/open-code-review
