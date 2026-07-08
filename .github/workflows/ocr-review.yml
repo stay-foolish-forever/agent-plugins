@@ -68,7 +68,9 @@ permissions:
 
 jobs:
   code-review:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    container:
+      image: ubuntu:24.04
     timeout-minutes: 30
     # Run on PR events, or on human-authored comments starting with trigger
     # keywords. Bot comments are excluded as a safety net: GITHUB_TOKEN already
@@ -92,6 +94,13 @@ jobs:
         )
       )
     steps:
+      # Materialize action.yml + scripts/ into the workspace so the local
+      # `uses: ./` action below can be resolved and loaded. For
+      # pull_request_target this checks out the trusted base branch; the
+      # composite action performs its own full checkout (fetch-depth: 0) later.
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Get PR context
         id: pr-context
         if: github.event_name == 'issue_comment'
@@ -111,7 +120,7 @@ jobs:
             core.setOutput('head_sha', pullRequest.head.sha);
 
       - name: Run OpenCodeReview
-        uses: stay-foolish-forever/ocr-action-test@main
+        uses: ./
         with:
           llm_url: ${{ secrets.OCR_LLM_URL }}
           llm_auth_token: ${{ secrets.OCR_LLM_AUTH_TOKEN }}
@@ -121,4 +130,4 @@ jobs:
           # pull_request_target the action resolves them from the event.
           base_ref: ${{ steps.pr-context.outputs.base_ref }}
           head_sha: ${{ steps.pr-context.outputs.head_sha }}
-          incremental: 'true'
+          incremental: "true"
