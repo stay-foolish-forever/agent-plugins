@@ -70,7 +70,7 @@ jobs:
   code-review:
     runs-on: self-hosted
     container:
-      image: node:24
+      image: ubuntu:24.04
     timeout-minutes: 30
     # Run on PR events, or on human-authored comments starting with trigger
     # keywords. Bot comments are excluded as a safety net: GITHUB_TOKEN already
@@ -94,12 +94,22 @@ jobs:
         )
       )
     steps:
+      # ubuntu:24.04 is a minimal image without git preinstalled; checkout
+      # and the steps below require it, so install it first.
+      - name: Install git
+        run: |
+          apt-get update
+          apt-get install -y git
+
       # Materialize action.yml + scripts/ into the workspace so the local
       # `uses: ./` action below can be resolved and loaded. For
       # pull_request_target this checks out the trusted base branch; the
       # composite action performs its own full checkout (fetch-depth: 0) later.
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - name: Trust workspace
+        run: git config --global --replace-all safe.directory '*'
 
       - name: Get PR context
         id: pr-context
