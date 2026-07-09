@@ -270,10 +270,13 @@ runs:
       with:
         github-token: ${{ inputs.github_token }}
         script: |
-          // 运行时定位随 action.yml 一起发布的 helper。
-          // GITHUB_ACTION_PATH：对已发布(远程)action、以及非容器下的本地 action 都正确；
-          // GITHUB_WORKSPACE：对本地 `uses: ./` action 正确——self-hosted + 容器时，
-          // GITHUB_ACTION_PATH 指向宿主路径(容器内不可见)，而 GITHUB_WORKSPACE 已正确映射到 /__w。
+          // Locate the helper shipped alongside action.yml at runtime.
+          // GITHUB_ACTION_PATH: correct for published (remote) actions and for
+          // local actions when not running in a container.
+          // GITHUB_WORKSPACE: correct for local `uses: ./` actions — under
+          // self-hosted + container setups, GITHUB_ACTION_PATH points to the
+          // host path (invisible inside the container), whereas GITHUB_WORKSPACE
+          // is correctly mapped to /__w.
           const fs = require('fs');
           const path = require('path');
           const REL = 'scripts/github-actions/post-review-comments.js';
