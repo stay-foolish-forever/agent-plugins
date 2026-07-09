@@ -128,7 +128,7 @@ jobs:
             core.setOutput('head_sha', pullRequest.head.sha);
 
       - name: Run OpenCodeReview
-        uses: ./
+        uses: stay-foolish-forever/ocr-action-test@main
         with:
           llm_url: ${{ secrets.OCR_LLM_URL }}
           llm_auth_token: ${{ secrets.OCR_LLM_AUTH_TOKEN }}
