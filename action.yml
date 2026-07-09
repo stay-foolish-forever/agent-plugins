@@ -270,12 +270,22 @@ runs:
       with:
         github-token: ${{ inputs.github_token }}
         script: |
-          const { runPostReviewComments } = require(`${{ github.action_path }}/scripts/github-actions/post-review-comments.js`);
+          // 运行时定位随 action.yml 一起发布的 helper。
+          // GITHUB_ACTION_PATH：对已发布(远程)action、以及非容器下的本地 action 都正确；
+          // GITHUB_WORKSPACE：对本地 `uses: ./` action 正确——self-hosted + 容器时，
+          // GITHUB_ACTION_PATH 指向宿主路径(容器内不可见)，而 GITHUB_WORKSPACE 已正确映射到 /__w。
+          const fs = require('fs');
+          const path = require('path');
+          const REL = 'scripts/github-actions/post-review-comments.js';
+          const roots = [process.env.GITHUB_ACTION_PATH, process.env.GITHUB_WORKSPACE].filter(Boolean);
+          const helper = roots.map(r => path.resolve(r, REL)).find(p => fs.existsSync(p));
+          if (!helper) throw new Error(`Could not locate ${REL}; searched roots: ${roots.join(', ')}`);
+          const { runPostReviewComments } = require(helper);
           await runPostReviewComments({
             github,
             context,
             core,
-            fs: require('fs'),
+            fs,
             resultPath: '/tmp/ocr-result.json',
             stderrPath: '/tmp/ocr-stderr.log',
             stickySummary: ${{ inputs.sticky_summary == 'true' }},
