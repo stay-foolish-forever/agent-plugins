@@ -70,7 +70,7 @@ jobs:
   code-review:
     runs-on: self-hosted
     container:
-      image: ubuntu:24.04
+      image: node:24
     timeout-minutes: 30
     # Run on PR events, or on human-authored comments starting with trigger
     # keywords. Bot comments are excluded as a safety net: GITHUB_TOKEN already
@@ -94,13 +94,6 @@ jobs:
         )
       )
     steps:
-      # ubuntu:24.04 is a minimal image without git preinstalled; checkout
-      # and the steps below require it, so install it first.
-      - name: Install git
-        run: |
-          apt-get update
-          apt-get install -y git
-
       # Pin github.com to a known IP to work around DNS resolution issues
       # on the self-hosted runner before checkout attempts to reach GitHub.
       - name: Pin github.com IP in hosts
